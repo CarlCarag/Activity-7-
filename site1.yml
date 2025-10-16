@@ -1,0 +1,32 @@
+--- 
+
+- hosts: all 
+  become: true 
+  pre_tasks:
+  - name: install updates (Ubuntu)
+    tags: always
+    apt: 
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+
+- hosts: workstations 
+  roles: 
+     - apache 
+  become: true
+
+- hosts: web_servers
+  roles: 
+     - apache
+  become: true
+
+- hosts: db_servers
+  become: true
+  roles: 
+     - db_servers
+
+- hosts: file_servers
+  become: true
+  roles: 
+     - file_servers
